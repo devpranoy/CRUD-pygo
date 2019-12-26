@@ -1,6 +1,5 @@
 import psycopg2
 from flask import Flask, request
-import requests
 import json
 app = Flask(__name__) #app initialisation
 
@@ -10,7 +9,7 @@ def create():
     name = request.json['name']
     conn = psycopg2.connect(database="postgres", user = "postgres", password = "password", host = "127.0.0.1", port = "5432")
     cur = conn.cursor()
-    sql ="""insert into data values('%s')"""%name
+    sql ="insert into data values('%s')"%name
     cur.execute(sql)
     conn.commit()
     conn.close()
@@ -31,22 +30,30 @@ def read():
     return json.dumps(response)
 
 # UPDATE
-@app.route('/update', methods=['GET','POST']) 
+@app.route('/update', methods=['PUT']) 
 def update():
+    name = request.json['name']
     conn = psycopg2.connect(database="postgres", user = "postgres", password = "password", host = "127.0.0.1", port = "5432")
     cur = conn.cursor()
-    
+    sql = "update data set name = '%s'"%name
+    cur.execute(sql)
     conn.commit()
     conn.close()
+    response = {'message':'Success'}
+    return json.dumps(response)
 
 # DELETE
-@app.route('/delete', methods=['GET','POST']) 
+@app.route('/delete', methods=['DELETE']) 
 def delete():
+    name = request.json['name']
     conn = psycopg2.connect(database="postgres", user = "postgres", password = "password", host = "127.0.0.1", port = "5432")
     cur = conn.cursor()
-    
+    sql = "delete from data where name='%s'"%name
+    cur.execute(sql)
     conn.commit()
     conn.close()
+    response = {'message':'Success'}
+    return json.dumps(response)
 
 
 if __name__=='__main__':
