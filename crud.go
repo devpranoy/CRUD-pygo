@@ -54,7 +54,23 @@ func create(w http.ResponseWriter, r *http.Request) {
 
 // READ
 func read(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome home!")
+	name := "None"
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		panic(err)
+	}
+	sqlStatement := `SELECT *  FROM data `
+	err = db.QueryRow(sqlStatement).Scan(&name)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	var response message
+	response.Message = name
+	json.NewEncoder(w).Encode(response)
+
 }
 
 // UPDATE
