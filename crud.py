@@ -24,7 +24,6 @@ def read():
     sql = "select * from data"
     cur.execute(sql)
     data = cur.fetchone()
-    conn.commit()
     conn.close()
     response = {'name':data[0]}
     return json.dumps(response)
