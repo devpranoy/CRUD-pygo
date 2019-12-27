@@ -6,7 +6,7 @@ app = Flask(__name__) #app initialisation
 # CREATE
 @app.route('/create', methods=['POST']) 
 def create():
-    name = request.json['name']
+    name = request.json['Name']
     conn = psycopg2.connect(database="postgres", user = "postgres", password = "password", host = "127.0.0.1", port = "5432")
     cur = conn.cursor()
     sql ="insert into data values('%s')"%name
