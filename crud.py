@@ -13,7 +13,7 @@ def create():
     cur.execute(sql)
     conn.commit()
     conn.close()
-    response = {'message':'Success'}
+    response = {'Message':'Success'}
     return json.dumps(response)
 
 # READ
@@ -25,20 +25,20 @@ def read():
     cur.execute(sql)
     data = cur.fetchone()
     conn.close()
-    response = {'name':data[0]}
+    response = {'Name':data[0]}
     return json.dumps(response)
 
 # UPDATE
 @app.route('/update', methods=['PUT']) 
 def update():
-    name = request.json['name']
+    name = request.json['Name']
     conn = psycopg2.connect(database="postgres", user = "postgres", password = "password", host = "127.0.0.1", port = "5432")
     cur = conn.cursor()
     sql = "update data set name = '%s'"%name
     cur.execute(sql)
     conn.commit()
     conn.close()
-    response = {'message':'Success'}
+    response = {'Message':'Success'}
     return json.dumps(response)
 
 # DELETE
@@ -51,7 +51,7 @@ def delete():
     cur.execute(sql)
     conn.commit()
     conn.close()
-    response = {'message':'Success'}
+    response = {'Message':'Success'}
     return json.dumps(response)
 
 
